@@ -5,9 +5,9 @@ var exec = require('cordova/exec');
 function FLOPlugin() {}
 
 FLOPlugin.prototype.startPolling = function(resultCallback) {
-  exec(function(tagUid, tagType){
+  exec(function(message){
       // result handler, response from native method call
-	  resultCallback(tagUid, tagType);
+	  resultCallback(message);
     },
     function(error){
       // error handler
@@ -16,20 +16,6 @@ FLOPlugin.prototype.startPolling = function(resultCallback) {
     "FLOPlugin", 
     "startPolling",
     []
-  );
-}
-
-FLOPlugin.prototype.acknowledgeScan = function(lastReceivedScan) {
-  exec(function(result){
-      // TODO
-    },
-    function(error){
-      // error handler
-      console.log("Flomio SDK plugin error occurred: " + error);
-    }, 
-    "FLOPlugin", 
-    "acknowledgeScan",  
-    [lastReceivedScan]
   );
 }
 
