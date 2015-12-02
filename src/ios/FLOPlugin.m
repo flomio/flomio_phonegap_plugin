@@ -90,11 +90,6 @@ FLOPlugin.m
 {
     
     NSLog(@"READ!!!");
-
-    // Send the scan data
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"READ!!!"]];
-    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:asyncCallbackId];
     //[self sendCommand:@"FFCA000000"];
     
 }
@@ -236,6 +231,11 @@ FLOPlugin.m
             NSString *ack = [trimmed substringFromIndex: [trimmed length] - 4];
             
             NSLog(@"recData:%@, %@",trimmed, ack);
+            
+            // Send the scan data
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"%@",trimmed]];
+            [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:asyncCallbackId];
             
             if ([ack intValue] == 9000) {
                 [_delegate didFeitianReaderSendUUID:[trimmed substringToIndex:[trimmed length] - 4] fromDevide:serialNumber];
