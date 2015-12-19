@@ -1,33 +1,35 @@
 /*
 FLOPlugin.h
-Uses Flomio SDK version 1.6
 */
 
+#import <Foundation/Foundation.h>
 #import <Cordova/CDV.h>
-#import "ReaderManager.h"
-#import "Reader.h"
-#import "NDEFMessage.h"
-#import "ReaderManager.h"
-#import "Reader.h"
-#import "NSData+FJStringDisplay.h"
-#import "ToastView.h"
+#import "ReaderInterface.h"
+#import "winscard.h"
+#import "ft301u.h"
 
-@interface FLOPlugin : CDVPlugin <ReaderManagerDelegate, ReaderDelegate> {
+@protocol FeitianReaderDelegate <NSObject>
+@optional
+
+- (void)didFeitianReaderSendUUID:(NSString*)uuid fromDevide:(NSString *)sn;
+
+@end
+
+@interface FLOPlugin : CDVPlugin <ReaderInterfaceDelegate> {
+    
+    BOOL cardIsAttached;
+    
+    SCARDCONTEXT gContxtHandle;
+    SCARDHANDLE  gCardHandle;
+    
+    BOOL isCardConnected;
+    
+    NSString *serialNumber;
     NSString *asyncCallbackId;
-	NSData *lastScan;
-	NSString *lastFloBleScan;
 }
 
-- (void)startPolling:(CDVInvokedUrlCommand*)command;
-- (void)stopPolling:(CDVInvokedUrlCommand*)command;
-- (void)acknowledgeScan:(CDVInvokedUrlCommand*)command;
-- (void)active;
-- (void)inactive;
-- (void)ReaderManager:(Reader *)reader readerAlert:(UIImageView *)imageView;
-- (void)didFindATag:(Tag *)tag withOperationState:(ReaderStateType)operationState withError:(NSError *)error;
-- (void)setDeviceStatus:(BOOL)enabled;
+@property id<FeitianReaderDelegate> delegate;
+@property (nonatomic,strong) ReaderInterface *readInf;
 
-@property (nonatomic, strong) ReaderManager *readerManager;
-@property (strong, nonatomic) NSArray *tagTypeStrings;
 
 @end
