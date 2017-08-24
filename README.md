@@ -112,6 +112,14 @@ meteor add-platform ios
 
 	Stops all readers polling in the current session
 
+* `sleepReaders()`
+
+	Puts all readers in the current session to sleep
+
+* `startReaders()`
+
+	Starts up all readers in the current session that have been stopped or put to sleep
+
 * `sendApdu(resultCallback, deviceId, apdu)`
 
 	Sends an APDU command to a target device
@@ -133,10 +141,26 @@ meteor add-platform ios
 	Assign a callback function to fire when any device connects or disconnects
 	
 	```
-	function resultCallback(deviceIdList)
-	Array deviceIdList  // list of connected device IDs
+	function resultCallback(result)
+	Object result
+	{
+		String 'Device ID',
+		int 'Battery Level',
+		int 'Communication Status',
+		String 'Firmware Revision',
+		String 'Hardware Revision'
+	}
 	```
-		
+	`String 'Device ID'`: unique ID code of the reader which either connected or disconnected
+
+	`int 'Battery Level'`: an int between 0 and 100 (0 == empty, 100 == fully charged)
+
+	`int 'Communication Status'`: 0 == disconnected, 1 == connected but not polling for tags, 2 == connected and polling for tags
+
+	`String 'Firmware Revision'`: firmware version i.e. `'FWV 1.16.03'`
+
+	`String 'Hardware Revision'`: hardware version i.e. `'HWV 1.03'`
+
 * `addTagStatusChangeListener(resultCallback)`
 
 	Assign a callback function to fire when a tag enters or leaves the proximity of any reader
